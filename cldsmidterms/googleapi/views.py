@@ -8,13 +8,48 @@ from django.db import transaction
 from googleapiclient.discovery import build
 from httplib2 import Http
 from .models import Profile
-from .forms import UserForm,ProfileForm
+from .forms import UserForm, ProfileForm, MailForm
+import smtplib
 
 # Create your views here.
 
 @login_required
 def Home(request):
-    return render(request, 'home.html')
+    if request.method == 'POST':
+        form = MailForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            gmail_user = cd.get('gmail_user')
+            gmail_pwd = cd.get('gmail_password')
+            to = cd.get('to_email')
+            subject = cd.get('subject')
+            message = cd.get('message')
+            header = 'To:' + to + '\n' + 'From: ' + gmail_user + '\n' + 'Subject:' + subject + '\n'
+            msg = header + '\n' + message + '\n\n'
+            ##---------------email is sent ----------------##
+            smtpserver = smtplib.SMTP('smtp.gmail.com', 587)
+            smtpserver.ehlo()
+            smtpserver.starttls()
+            smtpserver.ehlo()
+            smtpserver.login(gmail_user, gmail_pwd)
+            smtpserver.sendmail(gmail_user, to, msg)
+            smtpserver.close()
+            form = MailForm()
+            context = {
+                'form': form,
+            }
+            return render(request, 'home.html', context)
+        else:
+            # if sum not equal... then redirect to custom url/page
+            return HttpResponseRedirect('/')  # mention redirect url in argument
+
+    else:
+        form = MailForm()  # blank form object just to pass context if not post method
+        context = {
+            'form': form,
+        }
+
+    return render(request, 'home.html', context)
 
 @login_required
 @transaction.atomic
@@ -42,6 +77,5 @@ def Logout(request):
 
 def Maps(request):
     return render(request, 'maps.html')
-
 
 

@@ -33,59 +33,81 @@
         background-color: #008000;
     }
     #button2 {
-        background-color: dodgerblue ;
+        background-color: dodgerblue;
+    }
+    #button0 {
+        background-color: #f4511e;;
+    }
+    #submit_button {
+        background-color: #F4B400;
+        border-left: 1000px;
+        border-radius: 4px;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 22px;
+        padding: 20px;
+        width: 180px;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 20px;
+        float: right;
     }
     .button {
-      border-radius: 4px;
-      background-color: #f4511e;
-      border: none;
-      color: #FFFFFF;
-      text-align: center;
-      font-size: 28px;
-      padding: 20px;
-      width: 200px;
-      transition: all 0.5s;
-      cursor: pointer;
-      margin: 20px;
+        border-radius: 4px;
+        background-color: #f4511e;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 28px;
+        padding: 20px;
+        width: 200px;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 20px;
     }
 
     .button span {
-      cursor: pointer;
-      display: inline-block;
-      position: relative;
-      transition: 0.5s;
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
     }
 
     .button span:after {
-      content: '\00bb';
-      position: absolute;
-      opacity: 0;
-      top: 0;
-      right: -20px;
-      transition: 0.5s;
+        content: '\00bb';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
     }
 
     .button:hover span {
-      padding-right: 25px;
+        padding-right: 25px;
     }
 
     .button:hover span:after {
-      opacity: 1;
-      right: 0;
+        opacity: 1;
+        right: 0;
     }
+
 </style>
 <div id="makesleft">
-    <H5>Hi {{ user.email }}!</H5>
+    <H5>Hi {{ user.first_name }}!</H5>
 </div>
 <script type="text/javascript">
 function showmaps() {
     document.getElementById("map").style.display = "block";
+    document.getElementById("mail").style.display = "none";
 }
 function showmail() {
+    document.getElementById("mail").style.display = "block";
     document.getElementById("map").style.display = "none";
 }
 function showsheets() {
     document.getElementById("map").style.display = "none";
+    document.getElementById("mail").style.display = "none";
 }
 </script>
 
@@ -101,6 +123,13 @@ function showsheets() {
 </div>
 
 <div id="map"></div>
+<div id="mail" style="display: none">
+    <form action="{% url 'googleapi:homepage' %}" method="POST">{% csrf_token %}
+        {{form.as_p}}
+        <button id="submit_button" type="submit" class="button">Submit</button>
+    </form>
+
+</div>
 <script>
     var map;
     function initMap() {
@@ -111,5 +140,7 @@ function showsheets() {
     }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQkdbhT7piVUniPVJQ-BFQZzCI7QLPVLk&callback=initMap" async defer></script>
+
+
 
 {% endblock %}
