@@ -87,16 +87,14 @@ function showmail() {
 function showsheets() {
     document.getElementById("map").style.display = "none";
 }
-
-
 </script>
 
 
 <div id="dontmindthis"></div>
 <div class="content">
-    <div class="text" >Choose a google service:<div>
+    <div class="text" >Choose a google service:</div>
     <body>
-        <a><button id=button2 class="button" onclick="showmaps()"><span>Maps</span></button></a>
+        <button id=button2 class="button" onclick="showmaps()"><span>Maps</span></button>
         <button id=button1 class="button" onclick="showsheets()"><span>Sheets</span></button>
         <button id=button0 class="button" onclick="showmail()"><span>Mail</span></button>
     </body>
@@ -113,4 +111,5 @@ function showsheets() {
     }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQkdbhT7piVUniPVJQ-BFQZzCI7QLPVLk&callback=initMap" async defer></script>
+
 {% endblock %}
